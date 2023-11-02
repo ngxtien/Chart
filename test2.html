@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="_layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Biểu đồ cột</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <div style="width: 80%;">
+        <canvas id="bar"></canvas>
+    </div>
+
+    <script th:inline="javascript">
+        var Data = [[${vaccineList}]];
+        // var value_x = Data.map(x => x["vaccineName"])
+        // var value_y = Data.map(x => x["count"])
+
+        var value_x = Data.map(x => x.split(',')[0]); // Tách thành mảng trục X (vaccineName)
+        var value_y = Data.map(x => parseInt(x.split(',')[1])); // Tách thành mảng trục Y (count)
+
+
+        console.log(Data);
+        console.log(value_x)
+        console.log(value_y)
+
+        var allMonths = ["January", "February", "March", "April", "May",
+            "June", "July", "August", "September", "October", "November", "December"];
+
+
+        // var chartData = {
+        //     labels: value_x,
+        //     datasets: [Data],
+        //     fillColor: "rgba(220,220,220,0.5)",
+        //     strokeColor: "rgba(220,220,220,1)",
+        // };
+
+        var chartData = {
+            labels: allMonths,
+            datasets: [{
+                label: "Số lần tiêm vaccine",
+                data: value_y,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        var ctx = document.getElementById("bar").getContext("2d");
+        new Chart(ctx, {
+            type: 'bar',
+            data: chartData
+        });
+
+
+        // var chartData = {
+        //     labels : ["January","February","March","April","May","June","July"],
+        //     datasets : [
+        //         {
+        //             label : "Dataset 1",
+        //             fillColor : "rgba(220,220,220,0.5)",
+        //             strokeColor : "rgba(220,220,220,1)",
+        //             data : [65,59,90,81,56,55,40]
+        //         },
+        //         {
+        //             label : "Dataset 2",
+        //             fillColor : "rgba(151,187,205,0.5)",
+        //             strokeColor : "rgba(151,187,205,1)",
+        //             data : [28,48,40,19,96,27,100]
+        //         }
+        //     ]
+        // };
+        //
+        // var ctx = document.getElementById("bar").getContext("2d");
+        // new Chart(ctx, {
+        //     type: 'bar',
+        //     data: chartData
+        // });
+    </script>
+</body>
+</html>
