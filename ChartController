@@ -1,0 +1,51 @@
+package com.example.vaccination.controller;
+
+import com.example.vaccination.model.entity.Vaccine;
+import com.example.vaccination.service.impl.VaccineServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+@Controller
+public class ChartController {
+
+    @Autowired
+    private VaccineServiceImpl vaccineService;
+
+
+//    @GetMapping("/chart2")
+//    public String getChartData(Model model, @RequestParam(value = "year", required = true) String year) {
+//         vaccineService.getDataForYear(year);
+//
+//         return "chart2";
+//    }
+
+    @GetMapping("/testchart")
+    public String chartPage(@RequestParam(name = "year", required = false) String year, Model model) {
+        if (year != null) {
+            List<String> numberOfInjections =  vaccineService.findNumberOfInjectionsByYear(year);
+            model.addAttribute("year", year);
+            model.addAttribute("numberOfInjections", numberOfInjections);
+            System.out.println("numberOfInjections: " + numberOfInjections);
+
+
+        }
+        return "testchart";
+    }
+
+    @GetMapping("/test2")
+    public String getChartData2(Model model ) {
+       String year = "2022";
+        List<String> vaccineList = vaccineService.count();
+        model.addAttribute("vaccineList",vaccineList);
+
+         return "test2";
+    }
+
+}
